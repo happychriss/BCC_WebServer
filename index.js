@@ -1,2 +1,2 @@
 // index.js
-require('./app/app')
+require('./BlockChainDemo')
