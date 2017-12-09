@@ -1,0 +1,119 @@
+<div class="wallet-component">
+    <div class="row">
+        <div ng-if="checkWallet()===false">
+
+            <div class="col-sm-6">
+                <form name="form" ng-submit="form.$valid && createWallet(form)" novalidate>
+                    <div class="form-group">
+                        <label>Protect your data with a password:</label>
+                        <div ng-show="(form.$submitted || form.password.$touched) && (form.password.$error.required)"
+                             class="alert alert-danger">
+                            Please enter your password
+                        </div>
+                        <input type="password" name="password" value="" class="form-control" id="profile-password"
+                               ng-model="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm password</label>
+                        <div ng-show="(form.$submitted || form.password_confirm.$touched) && (form.password_confirm.$error.required)"
+                             class="alert alert-danger">
+                            Please confirm your password
+                        </div>
+                        <div ng-show="(form.$submitted || form.password_confirm.$touched) && !form.password_confirm.$error.required && !form.password_confirm.$valid"
+                             class="alert alert-danger">
+                            Passwords do not match
+                        </div>
+                        <input type="password" name="password_confirm" value="" class="form-control"
+                               id="profile-password-confirm" ng-model="password_confirm" required compare-to="password">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">Submit</button>
+                        <button type="button" class="btn btn-warning" ng-click="restoreWallet()">Restore</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+
+                        <div class="panel-body">
+                            <p>By pressing submit the javascript in your browser will generate a "wallet" - this wallet
+                                will store your private key.</p>
+                            <p>The private key can be used at any time to prove that you are the owner of the document
+                                you want to authenticate.</p>
+                            <p>The private key is kept safe in your browser cache, protected by your password.</p>
+                            <p>&nbsp;</p>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="checkWallet()===true">
+            <div class="col-sm-6">
+                <h3>You have already created a wallet.</h3>
+                <p>You wallet is saved in the Browser Cache. Its protected with a password!</p>
+                <p>You can use this wallet, or create a new wallet. Your old wallet will be deleted from the Browser
+                    cache in this case </p>
+                <p>
+                    <button type="button" class="btn btn-default" ng-click="restoreWalletFromLocalStorage()">Restore my
+                        Wallet
+                    </button>
+                    <button type="button" class="btn btn-sm btn-danger" ng-click="deleteWallet()">Delete my Wallet!!
+                    </button>
+                </p>
+            </div>
+
+            <div class="col-sm-6">
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                <p>Your already have created a "Wallet" on this Browser.</p>
+                <p>Its like a real wallet, it stores your private keys. It is stored encrypted in your browsers cache. </p>
+                <p>You have now two options</p>
+                <ol>
+                    <li>Create a new wallet - be carefully, this will delete your old wallet and you may not be able to prove your ownership of your previous upload </li>
+                    <li>Restore your old wallet, you will be able to prove ownership off the documents uploaded previously </li>
+                </ol>
+
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="accountAddress">
+    <div class="row">
+        <div class="col-sm-6">
+            <div id="result">
+                <h3>Result</h3>
+                <p>Your Public Address on the Ethereum Blockchain</p>
+                <p><strong>{{accountAddress}}</strong></p>
+                <p>Your secret words (write them down or print them) to re-generate your wallet</p>
+                <p><strong>{{seed}}</strong></p>
+                <div class="form-group">
+                    <button class="btn btn-default" ng-click="printResult('result')" ng-disabled="!accountAddress">Print
+                        Result
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                         <h3><strong>Your Address</strong></h3>
+                        <p>You now have an "address" - like your address at home.</p>
+                        <p>In actuality this is the address of your personal "Smart Contract" in the Blockchain.</p>
+                        <p><strong>Write down this address - with this address you can always find your "Smart
+                            Contract".<br>
+                        </strong></p>
+                        <p>This address is linked to you, as you are the owner of the private key. Only if you want, you
+                            can prove that your address belongs to you by creating a signature with your private
+                            address.</p>
+                        <h3><strong>Your Safety &amp; Backup</strong></h3>
+                        <p>If you will ever need your private key (e.g. a signature) from another browser or device -
+                            you can use the 10 magical words to re-produce your wallet at any time.</p>
+                    </div>
+               </div>
+            </div>
+        </div>
+    </div>
+</div>

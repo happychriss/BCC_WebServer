@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="BlockChainDemo" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="BlockChainDemo" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="BlockChainDemo" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="BlockChainDemo" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Blockchain Live Demo</title>
+  <!-- STYLES -->
+  <link rel="stylesheet" href="lib/css/main.min.css"/>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel='stylesheet' id='google_fonts-css'  href='//fonts.googleapis.com/css?family=Lato&#038;ver=4.7.4' type='text/css' media='all' />
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+
+
+<div class="blockchain-demo ng-scope" ng-controller="BlockchainController">
+    <div class="container">
+      <section>
+        <intro-component></intro-component>
+      </section>
+
+      <div class="well">
+        Step-1: Create your HOME in the Blockchain and save your credentials!
+      </div>
+
+      <section>
+        <wallet-component></wallet-component>
+      </section>
+
+      <div class="well">
+        Step-2: Get your documents characteristics saved on the Blockchain
+      </div>
+
+      <section>
+        <assets-upload></assets-upload>
+      </section>
+
+      <div class="well">
+        Step-3: Check your document on the Blockchain-  is it yours?
+      </div>
+
+      <section>
+        <assets-verify></assets-verify>
+      </section>
+
+      <error-popup class="container"></error-popup>
+      <global-loader></global-loader>
+    </div>
+  </div>
+
+
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+<script src="bower_components/spark-md5/spark-md5.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/angular-file-md5/angular-file-md5.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+  <script src="bower_components/ng-enter/ngEnter.js"></script>
+  <script src="bower_components/web3/dist/web3.js"></script>
+  <script src="bower_components/eth-lightwallet/dist/lightwallet.js"></script>
+  <script src="bower_components/hooked-web3-provider/build/hooked-web3-provider.js"></script>
+  <script src="app.js"></script>
+  <script src="blockchain_services.js"></script>
+</body>
+</html>
