@@ -8,7 +8,7 @@ var options = {};
 
 
 app.get('/config.js', function(req, res){
-    res.send("var BC_FUELSERVER_URL="+process.env.BLOCKCHAIN_URL+"");
+    res.send("var BC_FUELSERVER_URL="+process.env.BC_FUELSERVER_URL+"");
 
 });
 
