@@ -16,9 +16,9 @@ app.get('/*', function(req, res){
     res.sendFile(__dirname + '/app/index.html');
 });
 
-var port = 8000;
+var port = process.env.PORT;
 app.listen(port, function() {
-//  console.log(process.env);
+//  console.log(process.env);                                                                               
     console.log('server listening on port ' + port);
 });
 
