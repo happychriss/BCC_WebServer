@@ -1,7 +1,6 @@
 'use strict';
 
-
-angular.module("BlockChainDemo", ["ui.bootstrap", "ngCookies", "ljungmann.fileMd5", "ngFileUpload"]).run(["$http", "$uibModal", "UserService", function(my_http, t, my_user_service) {
+angular.module("BlockChainDemo", ["ui.bootstrap", "ngCookies", "ljungmann.fileMd5", "ngFileUpload"]).run(["$http", "$uibModal",  function(my_http, t, my_user_service) {
 
 }
 ]);
@@ -12,7 +11,7 @@ angular.module("BlockChainDemo").component("assetsUpload", {    controller: "Ass
 angular.module("BlockChainDemo").component("assetsVerify", {    controller: "AssetsVerifyController",    templateUrl: "templates/assets-verify.html"});
 angular.module("BlockChainDemo").component("introComponent", {  controller: function() {},               templateUrl: "templates/intro.html"});
 angular.module("BlockChainDemo").component("walletComponent", { controller: "WalletController",          templateUrl: "templates/wallet.html"});
-angular.module("BlockChainDemo").constant("SERVER_URL", "http://localhost:3000/").constant("SERVER_URL_BLOCKCHAIN", "http://localhost:3000/api/blockchain").constant("SERVER_URL_USERS_ME", "http://localhost:3000/api/users/me").constant("SERVER_URL_USERS_ENTER", "http://localhost:3000/api/users/enter").constant("HOST", "https://rinkeby.infura.io/NPDWCn9k71RH5knG9aPt").constant("HC_ADDRESS", "B943F922bD561A269283D73Ba3d5F5069dD6c9bd").constant("ABI", [{
+angular.module("BlockChainDemo").constant("HOST", "https://rinkeby.infura.io/NPDWCn9k71RH5knG9aPt").constant("HC_ADDRESS", "B943F922bD561A269283D73Ba3d5F5069dD6c9bd").constant("ABI", [{
     constant: !0,
     inputs: [{
         name: "",
@@ -181,7 +180,7 @@ angular.module("BlockChainDemo").constant("SERVER_URL", "http://localhost:3000/"
 
 ////// Controllers and function  *********************************************************************
 
-function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md5service, api_blockchain) {
+function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md5service, my_api_bc_ignore) {
     var my_scope = scope;
 
     const STEP_1_SENT_MONEY=1;
@@ -198,6 +197,7 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
         poll_transaction,
         timer_counter,
 
+
      SentAndPollData = function(status_in,tx) {
          status = status_in;
          contract_tx = tx;
@@ -207,13 +207,14 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
      },
 
      PollData=function () {
+        var my_api_bc=BC_FUELSERVER_URL;
 
          my_log.log("SendAndPollData with status:"+status); my_scope.timer_count=my_scope.timer_count+3;
 
          switch (status) {
              case STEP_1_SENT_MONEY:
                  my_scope.status_text="Step-1: We put some ether to your contract, so he can work!";
-                 my_http.post(api_blockchain + "1", contract_tx, null).success(function (req, res) {
+                 my_http.post(my_api_bc + "1", contract_tx, null).success(function (req, res) {
                      my_log.log("success : " + req + ":" + res);
                      status = STEP_2_POLL_MONEY;
 
@@ -238,7 +239,7 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
                      my_scope.timer_count=0;
                      my_scope.status_text="Step-3: Money is at your contract, you can check by clicking tx-1. Now sending your hash!!";
 
-                     my_http.post(api_blockchain + "2", contract_tx, null).success(function (req, res) {
+                     my_http.post(my_api_bc + "2", contract_tx, null).success(function (req, res) {
                          my_log.log("Contract Created, results : " + req + ":" + res);
                          status = STEP_3_POLL_CONTRACT;
                          poll_transaction=req;
@@ -335,7 +336,7 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
         return blockchainService.address && blockchainService.seed
     }
 }
-angular.module("BlockChainDemo").controller("AssetsUploadController", ["$scope","$timeout", "$http", "$window", "$log", "BlockChainService", "fileMd5Service", "SERVER_URL_BLOCKCHAIN", assetsUpload]);
+angular.module("BlockChainDemo").controller("AssetsUploadController", ["$scope","$timeout", "$http", "$window", "$log", "BlockChainService", "fileMd5Service",  assetsUpload]);
 
 
 function assetsVerifyController(scope, win, console, bc_service, md5_service) {
@@ -472,33 +473,6 @@ function WalletController(scope, window, bc_service) {
 angular.module("BlockChainDemo").controller("WalletController", ["$scope", "$window", "BlockChainService", WalletController]);
 
 
-function UserService(e, url_me, url_enter) {
-    this.checkToken = function(my_token) {
-        return e({
-            method: "GET",
-            url: url_me,
-            params: {
-                token: my_token
-            }
-        })
-    }
-        ,
-        this.enter = function(t, o) {
-            e({
-                method: "POST",
-                url: url_enter,
-                data: {
-                    email: t
-                }
-            }).then(function(e) {
-                var t = e.data.token;
-                localStorage.setItem("token", t),
-                    o()
-            }, function(e) {})
-        }
-
-}
-angular.module("BlockChainDemo").service("UserService", ["$http", "SERVER_URL_USERS_ME", "SERVER_URL_USERS_ENTER",UserService]);
 
 ////// Directives *********************************************************************
 
