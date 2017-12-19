@@ -11,7 +11,7 @@ angular.module("BlockChainDemo").component("assetsUpload", {    controller: "Ass
 angular.module("BlockChainDemo").component("assetsVerify", {    controller: "AssetsVerifyController",    templateUrl: "templates/assets-verify.html"});
 angular.module("BlockChainDemo").component("introComponent", {  controller: function() {},               templateUrl: "templates/intro.html"});
 angular.module("BlockChainDemo").component("walletComponent", { controller: "WalletController",          templateUrl: "templates/wallet.html"});
-angular.module("BlockChainDemo").constant("HOST", "https://rinkeby.infura.io/NPDWCn9k71RH5knG9aPt").constant("HC_ADDRESS", "B943F922bD561A269283D73Ba3d5F5069dD6c9bd").constant("ABI", [{
+    angular.module("BlockChainDemo").constant("HOST", "https://rinkeby.infura.io/NPDWCn9k71RH5knG9aPt").constant("HC_ADDRESS", "B943F922bD561A269283D73Ba3d5F5069dD6c9bd").constant("ABI", [{
     constant: !0,
     inputs: [{
         name: "",
@@ -345,6 +345,7 @@ function assetsVerifyController(scope, win, console, bc_service, md5_service) {
     // commma means a list of declaration, I am declaring functions here. executed during initialization
     my_scope.owner = null,
     my_scope.asset = bc_service.assetVerifier,
+    
 
     my_scope.verify = function(e) {
             md5_service.md5(e).progress(function(e) {
@@ -354,12 +355,13 @@ function assetsVerifyController(scope, win, console, bc_service, md5_service) {
             }).success(function(s) {
                 console.log("MD5 for " + e.name + " is " + s),
                     my_scope.asset.filehash = s;
-                var l = my_scope.asset.address; //smart contract address
-                bc_service.verifyOwner(function(file_handle, r) {
+                var contract_address = my_scope.asset.address; //smart contract address
+                bc_service.verifyOwner(function(file_handle, asset) {
                     file_handle ? (my_scope.noresult(),
-                        console.log("Failed to verity owner: " + file_handle)) : (my_scope.asset = r,
+                        console.log("Failed to verity owner: " + file_handle)) : (my_scope.asset = asset,
                         my_scope.asset.filehash = s,
-                        my_scope.asset.address = l,
+                        my_scope.asset.address = contract_address,
+                        my_scope.accountAddress = bc_service.address,
                         my_scope.$apply())
                 })
             })
@@ -415,13 +417,12 @@ angular.module("BlockChainDemo").controller("EnterController", ["$scope", "UserS
 function WalletController(scope, window, bc_service) {
     var my_scope = scope;
 
-
     my_scope.deleteWallet= function () {
         var isConfirmed = confirm("Are you sure to delete your wallet ?");
         if(isConfirmed){
             bc_service.deleteWallet(function(e){
-                my_scope.refresh(e)
-        })              }
+                my_scope.refresh(e);
+        })}
     },
 
     my_scope.checkWallet = function () {
@@ -431,15 +432,15 @@ function WalletController(scope, window, bc_service) {
 
     my_scope.restoreWalletFromLocalStorage = function() {
         bc_service.restoreWalletFromLocalStorage(function(e) {
-            my_scope.refresh(e)
-        })
+            my_scope.refresh(e);
+        });
     },
 
     my_scope.createWallet = function(form) {
         var mypwd = form.password.$viewValue;
         bc_service.createWallet(mypwd, function(e) {
-            my_scope.refresh(e)
-        })
+            my_scope.refresh(e);
+        });
     }
         ,
     my_scope.restoreWallet = function() {

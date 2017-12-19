@@ -11,10 +11,10 @@ function BlockChainService(my_ABI, address, host) {
     this.address = null,
     this.global_keystore = null,
     this.seed = null;
-    var my_scope = this;
+    var bc_scope = this;
 
     this.checkTransaction = function (poll_transaction) {
-        return (my_scope.web3.eth.getTransactionReceipt(poll_transaction))
+        return (bc_scope.web3.eth.getTransactionReceipt(poll_transaction));
     },
 
     this.createWallet = function(password, res) {
@@ -22,31 +22,31 @@ function BlockChainService(my_ABI, address, host) {
             my_random_seed = lightwallet.keystore.generateRandomSeed(random_value);
 
         lightwallet.keystore.deriveKeyFromPassword(password, function(err, pwDerivedKey) {
-            err ? res(err, null) : my_scope.initWallet(password, my_random_seed, pwDerivedKey, res)
+            err ? res(err, null) : bc_scope.initWallet(password, my_random_seed, pwDerivedKey, res)
         })
     }
     ,
 
     this.restoreWalletFromLocalStorage = function (res) {
         var  my_keystore=localStorage.getItem("my_wallet");
-        my_scope.global_keystore=lightwallet.keystore.deserialize(my_keystore);
+        bc_scope.global_keystore=lightwallet.keystore.deserialize(my_keystore);
         var pwd = prompt("Enter Password to open your Keystore, stored in the browser", "Password");
         pwd && lightwallet.keystore.deriveKeyFromPassword(pwd, function(err, pwDerivedKey) {
                 if (err)
                     res(err, null);
                 else {
-                    my_scope.global_keystore.generateNewAddress(pwDerivedKey, 1);
-                    var a = my_scope.global_keystore.getAddresses();
-                    my_scope.address = a[0];
-                    my_scope.seed=my_scope.global_keystore  .getSeed(pwDerivedKey);
+                    bc_scope.global_keystore.generateNewAddress(pwDerivedKey, 1);
+                    var a = bc_scope.global_keystore.getAddresses();
+                    bc_scope.address = a[0];
+                    bc_scope.seed=bc_scope.global_keystore.getSeed(pwDerivedKey);
                     var l = new HookedWeb3Provider({
                         host: host,
-                        transaction_signer: my_scope.global_keystore
+                        transaction_signer: bc_scope.global_keystore
                     });
-                    my_scope.web3.setProvider(l);
-                    res(null);
+                    bc_scope.web3.setProvider(l);
+                    res(null, bc_scope.address);
                 }
-        })
+        });
 
     },
 
@@ -59,54 +59,54 @@ function BlockChainService(my_ABI, address, host) {
                 var my_seed = prompt("Enter Seed to restore your wallet", "Seed");
                 if (!my_seed)
                     return;
-                my_scope.initWallet(pwd, my_seed, pwDerivedKey, res)
+                bc_scope.initWallet(pwd, my_seed, pwDerivedKey, res)
             }
         })
     }
     ,
 
     this.initWallet = function(password, my_seed, pwDerivedKey, res) {
-        my_scope.global_keystore = new lightwallet.keystore(my_seed,pwDerivedKey);
-        my_scope.global_keystore.generateNewAddress(pwDerivedKey, 1);
-        var a = my_scope.global_keystore.getAddresses();
-        my_scope.address = a[0], my_scope.seed = my_seed;
+        bc_scope.global_keystore = new lightwallet.keystore(my_seed,pwDerivedKey);
+        bc_scope.global_keystore.generateNewAddress(pwDerivedKey, 1);
+        var a = bc_scope.global_keystore.getAddresses();
+        bc_scope.address = a[0], bc_scope.seed = my_seed;
         var l = new HookedWeb3Provider({
             host: host,
-            transaction_signer: my_scope.global_keystore
+            transaction_signer: bc_scope.global_keystore
         });
-        my_scope.web3.setProvider(l);
-        res(null, my_scope.address);
+        bc_scope.web3.setProvider(l);
+        res(null, bc_scope.address);
 
-        localStorage.setItem("my_wallet", my_scope.global_keystore.serialize());
-        localStorage.setItem("my_address", my_scope.address);
+        localStorage.setItem("my_wallet", bc_scope.global_keystore.serialize());
+        localStorage.setItem("my_address", bc_scope.address);
 
     }
     ,
 
     this.deleteWallet = function(res) {
-        my_scope.global_keystore = null,
-        my_scope.address = null,
-        my_scope.seed = null,
+        bc_scope.global_keystore = null,
+        bc_scope.address = null,
+        bc_scope.seed = null,
         localStorage.clear();
-        res(null)
+        res(null);
     }
     ,
 
     this.buildRegisterAssetTx = function(e, t, r, n, i) {
         var a = lightwallet.txutils
-            , my_nonce = my_scope.web3.eth.getTransactionCount(e)
-            , gas_price = my_scope.web3.eth.gasPrice
+            , my_nonce = bc_scope.web3.eth.getTransactionCount(e)
+            , gas_price = bc_scope.web3.eth.gasPrice
             , d = {
             gas: 271057,
             gasPrice: Number(gas_price),
             gasLimit: 312200,
-            to: my_scope.assetVerifier.address,
+            to: bc_scope.assetVerifier.address,
             input: "0x",
             nonce: my_nonce,
             value: 0,
             contract: !1
         }
-            , u = a.functionTx(my_scope.assetVerifier.ABI, "createAsset", [t, n, r], d);
+            , u = a.functionTx(bc_scope.assetVerifier.ABI, "createAsset", [t, n, r], d);
         this.singTransaction(u, function(e, t) {
             i(e, t)
         })
@@ -120,40 +120,38 @@ function BlockChainService(my_ABI, address, host) {
                 if (r)
                     t(r, null);
                 else {
-                    var a = n.signTx(my_scope.global_keystore, i, e, my_scope.address);
+                    var a = n.signTx(bc_scope.global_keystore, i, e, bc_scope.address);
                     t(null, a)
                 }
             })
         }
     }
     ,
-    this.verifyOwner = function(e) {
-        var hash_contract = my_scope.web3.eth.contract(my_scope.assetVerifier.ABI).at(my_scope.assetVerifier.address);     //get access to the hash-contract
+    this.verifyOwner = function(res) {
+        var hash_contract = bc_scope.web3.eth.contract(bc_scope.assetVerifier.ABI).at(bc_scope.assetVerifier.address);     //get access to the hash-contract
 
 
-        hash_contract.getAsset({
-            from: "0x" + my_scope.address
-        }, function(t, r) {
-            function n(e, t) {
-                return 0 === r[e] || "0x" === r[e] ? "None" : t(r[e])
+        hash_contract.getAsset({from: "0x" + bc_scope.address}, function(err, res_asset) {
+            function n(file_handle, t) {
+                return 0 === res_asset[file_handle] || "0x" === res_asset[file_handle] ? "None" : t(res_asset[file_handle])
             }
-            function i(e) {
-                return my_scope.web3.toAscii(e)
+            function convert_to_asci(e) {
+                return bc_scope.web3.toAscii(e)
             }
-            if (t)
-                e(t, null);
+            if (err)
+                res(err, null);
             else {
-                var a = {
+                var resultVerfiy = {
                     owner: n(0, function(e) {
                         return e
                     }),
-                    hash: n(1, i),
-                    message: n(2, i),
+                    hash: n(1, convert_to_asci),
+                    message: n(2, convert_to_asci),
                     date: n(3, function(e) {
-                        return Date.parse(e.toFixed(0))
+                        return new Date(e.toNumber(0));
                     })
                 };
-                e(null, a)
+                res(null, resultVerfiy);
             }
         })
         }

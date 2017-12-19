@@ -6,7 +6,6 @@ app.use(express.static('app'));
 
 var options = {};
 
-
 app.get('/config.js', function(req, res){
     res.send("var BC_FUELSERVER_URL="+process.env.BC_FUELSERVER_URL+"");
 

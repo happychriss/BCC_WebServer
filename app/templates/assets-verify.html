@@ -4,15 +4,14 @@
             <form name="verifyForm" novalidate>
                 <div class="form-group">
                     <label>Select the file to validate: </label>
-                    <input type="file" class="form-control" ngf-select ng-model="picFile" name="file" ngf-max-size="2MB" required ngf-model-invalid="errorFile">
-                    <img ng-show="verifyForm.file.$valid && picFile.type=='image/jpeg'" ngf-thumbnail="picFile" class="thumb">
+                    <input type="file" class="form-control" ngf-select ng-model="picFile" name="file" ngf-max-size="2MB"
+                           required ngf-model-invalid="errorFile">
+                    <img ng-show="verifyForm.file.$valid && picFile.type=='image/jpeg'" ngf-thumbnail="picFile"
+                         class="thumb">
                     <a ng-click="picFile = null" ng-show="picFile">Remove File</a>
                 </div>
 
-                <div class="form-group">
-                    <label>Select the Smart Contract with the stored data: </label>
-                    <input type="text" name="smart_contact" ng-value="asset.address" class="form-control" required>
-                </div>
+
                 <div class="form-group">
                     <button ng-disabled="!verifyForm.$valid" ng-click="verify(picFile)" class="btn btn-default">
                         Check
@@ -20,41 +19,69 @@
                 </div>
             </form>
         </div>
+
         <div class="col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <p>Assuming you want to check if the file you have is the correct one on the Blockchain.</p>
-                    <p>This is something you’d want to do when you need proof of something, e.g. when the file was published for the first time, or whether you are the owner of the file.</p>
+                     <p>Assuming you want to check if the file you have is the correct one on the Blockchain.</p>
+                    <p>This is something you’d want to do when you need proof of something, e.g. when the file was
+                        published
+                        for the first time, or whether you are the owner of the file.</p>
                     <p>Again - the file itself will *never* be uploaded to the Blockchain.</p>
                     <p>&nbsp;</p>
                 </div>
             </div>
         </div>
     </div>
+
+<div ng-if="asset.hash != null">
+
     <div class="row">
         <div class="col-sm-6">
-            <p>My address: <strong>{{address}}</strong></p>
-            <p>Smart Contract Address: <strong>{{asset.owner}}</strong></p>
-            <p>File Uploaded on: <strong>{{asset.date}}</strong></p>
-            <p>Message Text: <strong>{{asset.message}}</strong></p>
-            <h4>Validation Result</h4>
+            <h4>Information</h4>
+            <p>My address: <strong>{{accountAddress}}</strong></p>
+            <p>Smart Contract Address: <strong>{{asset.address}}</strong></p>
             <p>Hash in the Blockchain: <strong>{{asset.hash}}</strong></p>
             <p>Hash of your File: <strong>{{asset.filehash}}</strong></p>
-            <p>Result:
-                <i class="fa fa-check-square-o yes-icon" aria-hidden="true" ng-show="asset.hash != null && asset.hash == asset.filehash"> File wasn't changed.</i>
-                <span class="no-icon" ng-show="asset.hash == null || asset.hash !== asset.filehash"> File was changed or you select another file.</span>
-            </p>
+
+            <h4>Results</h4>
+
+            <div ng-if="asset.hash == asset.filehash">
+                <div class="panel_green">
+                    <div class="panel-body">
+                        <b>Congratulations. The file you have checked is the same as uploaded at the blockchain!</b>
+                        <p>File Uploaded on: <strong>{{asset.date}}</strong></p>
+                        <p>Message Text: <strong>{{asset.message}}</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-if="asset.hash !== asset.filehash">
+                <div class="panel_red">
+                    <div class="panel-body">
+                        <b>ERROR:The file you checked is not represented on the Blockchain or has been
+                            manipulated!</b>
+
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div class="col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h3>Final Result</h3>
                     <ul>
                         <li>If you see&nbsp; a "green checkmark" the file is correct.</li>
-                        <li>If you see a "red NO" the file did not match - it is not the same file as the one certified on the Blockchain.</li>
+                        <li>If you see a "red NO" the file did not match - it is not the same file as the one
+                            certified
+                            on
+                            the Blockchain.
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
