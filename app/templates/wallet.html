@@ -50,6 +50,7 @@
         <div ng-if="checkWallet()===true">
             <div class="col-sm-6">
                 <h3>You have already created a wallet.</h3>
+
                 <p>You wallet is saved in the Browser Cache. Its protected with a password!</p>
                 <p>You can use this wallet, or create a new wallet. Your old wallet will be deleted from the Browser
                     cache in this case </p>
@@ -63,17 +64,15 @@
             </div>
 
             <div class="col-sm-6">
-
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                <p>Your already have created a "Wallet" on this Browser.</p>
-                <p>Its like a real wallet, it stores your private keys. It is stored encrypted in your browsers cache. </p>
-                <p>You have now two options</p>
-                <ol>
-                    <li>Create a new wallet - be carefully, this will delete your old wallet and you may not be able to prove your ownership of your previous upload </li>
-                    <li>Restore your old wallet, you will be able to prove ownership off the documents uploaded previously </li>
-                </ol>
-
+               <div class="panel panel-default">
+                   <div class="panel-body">
+                    <p>Your already have created a "Wallet" on this Browser.</p>
+                    <p>Its like a real wallet, it stores your private keys. It is stored encrypted in your browsers cache. </p>
+                    <p>You have now two options</p>
+                    <ol>
+                        <li>Create a new wallet - be carefully, this will delete your old wallet and you may not be able to prove your ownership of your previous upload </li>
+                        <li>Restore your old wallet, you will be able to prove ownership off the documents uploaded previously </li>
+                    </ol>
             </div>
                 </div>
             </div>
@@ -82,26 +81,44 @@
     <div ng-if="accountAddress">
     <div class="row">
         <div class="col-sm-6">
+
             <div id="result">
-                <h3>Result</h3>
-                <p>Your Public Address on the Ethereum Blockchain</p>
+                <p>Your Wallet certifies, that you are owner of this public address:</p>
                 <p><strong>{{accountAddress}}</strong></p>
-                <p>Your secret words (write them down or print them) to re-generate your wallet</p>
+                <p>Your secret words (write them down or print them) to re-generate your wallet:</p>
                 <p><strong>{{seed}}</strong></p>
                 <div class="form-group">
                     <button class="btn btn-default" ng-click="printResult('result')" ng-disabled="!accountAddress">Print
-                        Result
+                        secret words for backup
                     </button>
                 </div>
             </div>
+            <div ng-if="upload_asset.name!=''">
+                <div class="panel_green">
+                    <p>You already have uploaded data to the blockchain with this account.</p>
+                    <p>Your name was read from the blockchain, it is: </p>
+                    <h3><strong>{{upload_asset.name}}</strong></h3>
+                    <p>Created on: {{upload_asset.upload_date}} </p>
+
+                    <table>
+                        <tr ng-repeat="hash in hashes">
+                            <td>{{ hash.description}}</td>
+                            <td>{{ hash.create_date }}</td>
+                        </tr>
+                    </table>
+
+
+                </div>
+            </div>
+
+
         </div>
         <div class="col-sm-6">
 
                 <div class="panel panel-default">
                     <div class="panel-body">
                          <h3><strong>Your Address</strong></h3>
-                        <p>You now have an "address" - like your address at home.</p>
-                        <p>In actuality this is the address of your personal "Smart Contract" in the Blockchain.</p>
+                        <p>You now have an "address" on the blockchain - like your address at home.</p>
                         <p><strong>Write down this address - with this address you can always find your "Smart
                             Contract".<br>
                         </strong></p>

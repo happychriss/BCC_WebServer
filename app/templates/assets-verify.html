@@ -34,29 +34,30 @@
         </div>
     </div>
 
-<div ng-if="asset.hash != null">
+<div ng-if="asset.filehash != ''">
 
     <div class="row">
         <div class="col-sm-6">
             <h4>Information</h4>
+            <p>Asset Found: <strong>{{asset.asset_found}}</strong></p>
             <p>My address: <strong>{{accountAddress}}</strong></p>
             <p>Smart Contract Address: <strong>{{asset.address}}</strong></p>
-            <p>Hash in the Blockchain: <strong>{{asset.hash}}</strong></p>
             <p>Hash of your File: <strong>{{asset.filehash}}</strong></p>
 
             <h4>Results</h4>
 
-            <div ng-if="asset.hash == asset.filehash">
+            <div ng-if="asset.asset_found">
                 <div class="panel_green">
                     <div class="panel-body">
                         <b>Congratulations. The file you have checked is the same as uploaded at the blockchain!</b>
-                        <p>File Uploaded on: <strong>{{asset.date}}</strong></p>
+                        <p>Owner: {{asset.ownername}}</p>
+                        <p>File Uploaded on: <strong>{{asset.uploaded}}</strong></p>
                         <p>Message Text: <strong>{{asset.message}}</strong></p>
                     </div>
                 </div>
             </div>
 
-            <div ng-if="asset.hash !== asset.filehash">
+            <div ng-if="!asset.asset_found">
                 <div class="panel_red">
                     <div class="panel-body">
                         <b>ERROR:The file you checked is not represented on the Blockchain or has been

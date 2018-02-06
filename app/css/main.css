@@ -248,3 +248,8 @@ error-popup .error-popup-container {
 error-popup.error-popup-show {
     top: 0px;
 }
+table, tr , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+}
