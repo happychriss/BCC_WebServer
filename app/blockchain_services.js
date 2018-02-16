@@ -141,6 +141,7 @@ function BlockChainService(my_ABI, address, host) {
             bs_service.assetList.owner_name = null;
             bs_service.assetList.hashes = [];
             bs_service.owner_found=false;
+            bs_service.owner=null;
 
             do {
 
@@ -220,10 +221,20 @@ function BlockChainService(my_ABI, address, host) {
         }
         ,
         this.verifyOwner = function (checksum, res) {
+
+
+            if (bs_service.currentProvider==null) {
+                var l = new HookedWeb3Provider({
+                    host: host,
+                    transaction_signer: bs_service.global_keystore
+                });
+                bs_service.web3.setProvider(l);
+            }
+
             var hash_contract = bs_service.web3.eth.contract(bs_service.assetVerifier.ABI).at(bs_service.assetVerifier.address);     //get access to the hash-contract
 
 
-            hash_contract.getAssetbyHash(checksum, {from: "0x" + bs_service.address}, function (err, asset) {
+            hash_contract.getAssetbyHash(checksum, function (err, asset) {
                 function check_zero(pos, res) {
                     return 0 === asset[pos] || "0x" === asset[pos] ? "None" : res(asset[pos])
                 }
@@ -243,6 +254,7 @@ function BlockChainService(my_ABI, address, host) {
                             return res
                         }),
                         owner_name: check_zero(1, convert_to_asci),
+
                         date: check_zero(2, function (res) {
                             return new Date(res.toNumber(0));
                         }),

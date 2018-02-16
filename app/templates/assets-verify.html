@@ -38,9 +38,7 @@
 
     <div class="row">
         <div class="col-sm-6">
-            <h4>Information</h4>
-            <p>Asset Found: <strong>{{asset.asset_found}}</strong></p>
-            <p>My address: <strong>{{accountAddress}}</strong></p>
+            <h4>Your information</h4>
             <p>Smart Contract Address: <strong>{{asset.address}}</strong></p>
             <p>Hash of your File: <strong>{{asset.filehash}}</strong></p>
 
@@ -49,10 +47,11 @@
             <div ng-if="asset.asset_found">
                 <div class="panel_green">
                     <div class="panel-body">
-                        <b>Congratulations. The file you have checked is the same as uploaded at the blockchain!</b>
-                        <p>Owner: {{asset.ownername}}</p>
-                        <p>File Uploaded on: <strong>{{asset.uploaded}}</strong></p>
+                        <b>The file you have checked was found in the Blockchains smart contract.!</b>
+                        <strong>Owner: {{asset.ownername}}</strong>
+                        <p>Owner Address: {{asset.owner}}</p>
                         <p>Message Text: <strong>{{asset.message}}</strong></p>
+                        <p>File Uploaded on: <strong>{{asset.uploaded}}</strong></p>
                     </div>
                 </div>
             </div>

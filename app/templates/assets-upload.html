@@ -79,6 +79,15 @@
                     </div>
                 </div>
             </div>
+            <div ng-if="status<0">
+                <h3>Uploading Status</h3>
+                <div class="panel_red ">
+                    <div class="panel-body">
+                        <h4>ERROR</h4>
+                        <p><strong>{{status_text}}</strong></p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="col-sm-6">

@@ -331,12 +331,17 @@ angular.module("BlockChainDemo").constant("HOST", "http://localhost:9545").const
 function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md5service, my_api_bc_ignore) {
     var my_scope = scope;
 
+    my_scope.upload_asset = {
+        name: "",
+        message: ""
+    } ;
+
 
     const STEP_1_SENT_MONEY = 1;
     const STEP_2_POLL_MONEY = 2;
     const STEP_3_POLL_CONTRACT = 3;
     const STEP_4_CONTRACT_DONE = 4;
-    const ERROR = 6;
+    const ERROR = -1;
 
     var loadTime = 3000, //Load the data every second
         errorCount = 0, //Counter for the server errors
@@ -411,8 +416,23 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
                     if (tresult === null) {
                         nextLoad();
                     } else {
-                        my_log.log("Polling Done");
                         status = STEP_4_CONTRACT_DONE;
+                        my_log.log("Polling Done");
+
+                        tresult.logs.forEach(function (log) {
+                        //The hash of the signature of the event is one of the topics, in this case for event Error(address indexed sender, uint errorCode);
+                          if (log.topics[0]==="0x9cf38cf2dbf9139f5c32639950507b10775fbbe0421f3e168bc2d1bb1ae3208c") {
+
+                              switch (blockchainService.web3.toDecimal(log.data)){
+                                  case 1001: my_scope.status_text="Sorry, Hash was already uploaded";break;
+                                  default: my_scope.status_text="UNKOWN ERROR-Code:"+blockchainService.web3.toDecimal(log.data);
+                            }
+
+                           status = ERROR;
+                          }
+                        });
+
+
                     }
                     errorCount = 0;
                     nextLoad();
@@ -547,6 +567,7 @@ function assetsVerifyController(scope, win, console, bc_service, md5_service) {
                     console.log("Found asset with hash:" + checksum);
                     my_scope.asset.message = verify_result.message;
                     my_scope.asset.ownername = verify_result.owner_name;
+                    my_scope.asset.owner = verify_result.owner;
                     my_scope.asset.uploaded = verify_result.date;
                     my_scope.asset.filehash = checksum;
                     my_scope.asset.address = contract_address;
