@@ -343,7 +343,7 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
     const STEP_4_CONTRACT_DONE = 4;
     const ERROR = -1;
 
-    var loadTime = 3000, //Load the data every second
+    var loadTime = 1000, //Load the data every second
         errorCount = 0, //Counter for the server errors
         loadPromise, //Pointer to the promise created by the Angular $timout service
         status = 0,

@@ -6,20 +6,20 @@
 
                 <div ng-show="ownername==''">
                     <div class="form-group">
-                        <label>Owner Name :</label>
-                        <p>Enter a name that is visible for everybody to help identifiying the real owner of the document.</p>
+                        <label>Certificate Issuer / Owner Name :</label>
+                        <p>The "Certificate Issuer Name" (maybe the WebDomain you own) is used to link your Blockchain Identity with your REAL identity. It is uploaded to the Blockchain and public.</p>
                         <input class="form-control" id="owner-name" type="text" ng-required="ownername==''" ng-model="upload_asset.name"/>
                     </div>
                 </div>
 
                 <div ng-show="ownername!=''">
-                    <h2>Owner: {{ownername}}</h2>
+                    <h2>Certificate Owner: {{ownername}}</h2>
                 </div>
 
 
                 <div class="form-group">
-                    <label>File for Hash upload (your file will NEVER be uploaded): </label>
-                    <p>Select your file (can be anything: PDF, JPG, WordDocument....)</p>
+                    <label>Certificate</label>
+                    <p>The Certificate that was issued by you. The file can be anything: PDF, JPG, WordDocument. Only the Hash of the file will be uploaded!!!</p>
                     <input type="file" class="form-control" ngf-select ng-model="picFile" name="file" ngf-max-size="2MB"
                            required ngf-model-invalid="errorFile">
                     <img ng-show="myForm.file.$valid && picFile.type=='image/jpeg'" ngf-thumbnail="picFile"
@@ -28,14 +28,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="additional-message">Additional Message (optional): </label>
+                    <label for="additional-message">Additional Message or Type of Certificate (optional): </label>
                     <p>(will be visible for everyone on the Blockchain)</p>
                     <textarea name="additional-message" class="form-control" id="additional-message" rows="1" ng-model="upload_asset.message"> </textarea>
                 </div>
                 <div class="form-group">
                     <button ng-disabled="!myForm.$valid || !hasOwner()" ng-click="uploadPic(picFile)"
                             class="btn btn-default">
-                        Push you data to the Blockchain!
+                        Push Certificate Hash to the Blockchain!
                     </button>
                 </div>
             </form>
@@ -44,14 +44,17 @@
         <div class="col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-body">
+                    <h3>The Hash</h3>
                     <p>Your file will <strong>NEVER </strong>leave your PC (you can check the javascript of this page if
                         you want).</p>
                     <p>A unique number, the "hash" of your document will be calculated inside the browser. If your
                         document is modified (e.g. just a single bit is changed) the Hash will be different. The Hash is
                         unique for your document.</p>
                     <p>Only this Hash will be uploaded to the Blockchain - not the content of your document</p>
-                    <p>You can add a free-text or your personal greeting. This text will be readable by everybody.</p>
-                    <p>&nbsp;</p>
+                    <h3>Push to the Blockchain</h3>
+                    <p>When pressing the Button, the Hash will be calculated and uploaded to the Blockchain together with the other information your provided.</p>
+                    <p>The transaction will be signed by our private key. So everybody can prove that YOUR uploaded this file.</p>
+                    <p>Note: This will take some time - because the transaction must be integrated into the Blockchain by the Miners.&nbsp;</p>
                 </div>
             </div>
         </div>
@@ -95,19 +98,11 @@
                 <div class="panel panel-default">                                                                                           
                     <div class="panel-body">
                         <h3>It's now on the Blockchain.</h3>
-                        <p>Check that your data is there via the Blockchain explorer.</p>
-                        <p>Let’s assume you have done some research and created a white-paper as summary. Now you can
-                            prove:</p>
-                        <ul>
-                            <li>That you are the owner of this document</li>
-                            <li>When you have updated the document</li>
-                            <li>That the document you are presenting is the original document and has not been
-                                manipulated
-                            </li>
-                            <li>That nobody can read the document or access the content, until you want</li>
-                        </ul>
-                        <p>&nbsp;</p>
-                        <p>&nbsp;</p>
+                        <p>Your data is stored in a "Smart Contract". You can check your data in the the Blockchain explorer:</p>
+                        <p>Everybody can READ from this smart contract and has access to the Hashes that are stored there.</p>
+                        <p>Because only you can write data to the Blockchain with your Public Address - the Hash of the documents must have been uploaded by the Certicate Owner</p>
+                        <h3>Do it again</h3>
+                        <p>You can do it for all certificate you are issuing, just upload another file and maybe update the message text.</p>
                     </div>
                 </div>
             </div>
