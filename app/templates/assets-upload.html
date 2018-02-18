@@ -1,25 +1,26 @@
 <div class="assets-upload">
     <div class="row">
         <div class="col-sm-6">
+
             <form name="myForm" novalidate>
 
 
                 <div ng-show="ownername==''">
                     <div class="form-group">
-                        <label>Certificate Issuer / Owner Name :</label>
-                        <p>The "Certificate Issuer Name" (maybe the WebDomain you own) is used to link your Blockchain Identity with your REAL identity. It is uploaded to the Blockchain and public.</p>
+                        <label>Certificate Issuer</label>
+                        <p>The "Certificate Issuer Name" can be any name that helps to find your real identify - for example the WebDomain you own. It is uploaded to the Blockchain and public.</p>
                         <input class="form-control" id="owner-name" type="text" ng-required="ownername==''" ng-model="upload_asset.name"/>
                     </div>
                 </div>
 
                 <div ng-show="ownername!=''">
-                    <h2>Certificate Owner: {{ownername}}</h2>
+                    <p><strong>Certificate Issuer: {{ownername}}</strong></p>
                 </div>
 
 
                 <div class="form-group">
                     <label>Certificate</label>
-                    <p>The Certificate that was issued by you. The file can be anything: PDF, JPG, WordDocument. Only the Hash of the file will be uploaded!!!</p>
+                    <p>The Certificate that was issued by you (to calculate the Hash). Can be anything: PDF, JPG, Word</p>
                     <input type="file" class="form-control" ngf-select ng-model="picFile" name="file" ngf-max-size="2MB"
                            required ngf-model-invalid="errorFile">
                     <img ng-show="myForm.file.$valid && picFile.type=='image/jpeg'" ngf-thumbnail="picFile"
@@ -29,9 +30,13 @@
 
                 <div class="form-group">
                     <label for="additional-message">Additional Message or Type of Certificate (optional): </label>
-                    <p>(will be visible for everyone on the Blockchain)</p>
+                    <p>Uploaded to the Blockchain and public.</p>
                     <textarea name="additional-message" class="form-control" id="additional-message" rows="1" ng-model="upload_asset.message"> </textarea>
                 </div>
+
+                <p><strong>Note:</strong></p>
+                <p>Your data will be uploaded to a Smart Contract on the Blochchain: &nbsp;<strong><a href="{{$root.ETHERSCAN}}{{upload_asset.address}}">0x{{upload_asset.address}}</a></strong></p>
+                <p>It will take ca 60 seconds until your transaction is confirmed.</p>
                 <div class="form-group">
                     <button ng-disabled="!myForm.$valid || !hasOwner()" ng-click="uploadPic(picFile)"
                             class="btn btn-default">
@@ -45,16 +50,11 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h3>The Hash</h3>
-                    <p>Your file will <strong>NEVER </strong>leave your PC (you can check the javascript of this page if
-                        you want).</p>
-                    <p>A unique number, the "hash" of your document will be calculated inside the browser. If your
-                        document is modified (e.g. just a single bit is changed) the Hash will be different. The Hash is
-                        unique for your document.</p>
-                    <p>Only this Hash will be uploaded to the Blockchain - not the content of your document</p>
-                    <h3>Push to the Blockchain</h3>
-                    <p>When pressing the Button, the Hash will be calculated and uploaded to the Blockchain together with the other information your provided.</p>
-                    <p>The transaction will be signed by our private key. So everybody can prove that YOUR uploaded this file.</p>
-                    <p>Note: This will take some time - because the transaction must be integrated into the Blockchain by the Miners.&nbsp;</p>
+                    <p>The <strong>Hash</strong> is a number calculated from the document you want to certify. If the document is modified (e.g. just a single bit is changed) the Hash will be different. Therefore the Hash is unique for your document.</p>
+                    <p>Only this Hash will be uploaded, your file will <strong>NEVER</strong> leave your PC. (IT people can check the javascript of this page).</p>
+                    <h3>Upload to the Blockchain</h3>
+                    <p>When pressing the Button, your Public Address, the Hash and all other information is uploaded to the Blockchain. </p>
+                    <p>Your data is actually sent to a <a href="{{$root.ETHERSCAN}}{{upload_asset.address}}">Smart Contract</a> .The Smart Contracts runs all the logic to validate your Public Address and to check the Hash.</p>
                 </div>
             </div>
         </div>
@@ -81,6 +81,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
             <div ng-if="status<0">
                 <h3>Uploading Status</h3>
@@ -107,6 +108,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>

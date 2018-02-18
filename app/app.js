@@ -1,9 +1,313 @@
 'use strict';
 
-angular.module("BlockChainDemo", ["ui.bootstrap", "ngCookies", "ljungmann.fileMd5", "ngFileUpload"]).run(["$http", "$uibModal", function (my_http, t, my_user_service) {
+angular.module("BlockChainDemo",
+    ["ui.bootstrap", "ngCookies", "ljungmann.fileMd5", "ngFileUpload"])
+    .constant("HOST", "https://rinkeby.infura.io/NPDWCn9k71RH5knG9aPt")
+    .constant("HC_ADDRESS", "2993adA82373AA0b3A95780E35D21718160Cc974")
+    .constant("ABI",
 
-}
-]);
+// angular.module("BlockChainDemo").constant("HOST", "http://localhost:9545").constant("HC_ADDRESS", "345ca3e014aaf5dca488057592ee47305d9b3e10").constant("ABI",
+        [
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "name": "owners",
+                "outputs": [
+                    {
+                        "name": "name",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "createDate",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "is_created",
+                        "type": "bool"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "name": "_owner",
+                        "type": "address"
+                    }
+                ],
+                "name": "setOwner",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [],
+                "name": "destroy",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getOwner",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "name": "index",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "getHashesbyOwner",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    },
+                    {
+                        "name": "",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "owner",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "name": "_checksum",
+                        "type": "bytes32"
+                    }
+                ],
+                "name": "getAssetbyHash",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    },
+                    {
+                        "name": "",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "name": "",
+                        "type": "bytes32"
+                    }
+                ],
+                "name": "assets",
+                "outputs": [
+                    {
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "name": "checksum",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "description",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "createDate",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "name": "_checksum",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "_ownerName",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "_description",
+                        "type": "bytes32"
+                    },
+                    {
+                        "name": "_createDate",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "createAsset",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "fallback"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "name": "_checksum",
+                        "type": "bytes32"
+                    },
+                    {
+                        "indexed": false,
+                        "name": "_createDate",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "AssetCreated",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "name": "sender",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "name": "errorCode",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "Error",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "name": "owner_name",
+                        "type": "bytes32"
+                    }
+                ],
+                "name": "OwnerCreated",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": false,
+                        "name": "message",
+                        "type": "string"
+                    }
+                ],
+                "name": "Log",
+                "type": "event"
+            }
+        ]
+    ).run(["$http", "$uibModal","$rootScope", function (my_http, t, $rootScope) {
+        $rootScope.ETHERSCAN="https://rinkeby.etherscan.io/address/";
+
+    }]);
 
 ////// Components *********************************************************************
 // angular.module("BlockChainDemo").component("assetsUploadInfo", {controller: function() {},               templateUrl: "templates/assets-upload-info.html"});
@@ -24,307 +328,6 @@ angular.module("BlockChainDemo").component("walletComponent", {
     templateUrl: "templates/wallet.html"
 });
 
-// angular.module("BlockChainDemo").constant("HOST", "https://rinkeby.infura.io/NPDWCn9k71RH5knG9aPt").constant("HC_ADDRESS", "B943F922bD561A269283D73Ba3d5F5069dD6c9bd").constant("ABI", [{
-
-angular.module("BlockChainDemo").constant("HOST", "http://localhost:9545").constant("HC_ADDRESS", "345ca3e014aaf5dca488057592ee47305d9b3e10").constant("ABI",
-    [
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "name": "owners",
-            "outputs": [
-                {
-                    "name": "name",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "createDate",
-                    "type": "uint256"
-                },
-                {
-                    "name": "is_created",
-                    "type": "bool"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": false,
-            "inputs": [
-                {
-                    "name": "_owner",
-                    "type": "address"
-                }
-            ],
-            "name": "setOwner",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "constant": false,
-            "inputs": [],
-            "name": "destroy",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "getOwner",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "name": "index",
-                    "type": "uint256"
-                }
-            ],
-            "name": "getHashesbyOwner",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "address"
-                },
-                {
-                    "name": "",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "",
-                    "type": "uint256"
-                },
-                {
-                    "name": "",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "owner",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "name": "_checksum",
-                    "type": "bytes32"
-                }
-            ],
-            "name": "getAssetbyHash",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "address"
-                },
-                {
-                    "name": "",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "",
-                    "type": "uint256"
-                },
-                {
-                    "name": "",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "name": "",
-                    "type": "bytes32"
-                }
-            ],
-            "name": "assets",
-            "outputs": [
-                {
-                    "name": "owner",
-                    "type": "address"
-                },
-                {
-                    "name": "checksum",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "description",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "createDate",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": false,
-            "inputs": [
-                {
-                    "name": "_checksum",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "_ownerName",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "_description",
-                    "type": "bytes32"
-                },
-                {
-                    "name": "_createDate",
-                    "type": "uint256"
-                }
-            ],
-            "name": "createAsset",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "fallback"
-        },
-        {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": true,
-                    "name": "owner",
-                    "type": "address"
-                },
-                {
-                    "indexed": true,
-                    "name": "_checksum",
-                    "type": "bytes32"
-                },
-                {
-                    "indexed": false,
-                    "name": "_createDate",
-                    "type": "uint256"
-                }
-            ],
-            "name": "AssetCreated",
-            "type": "event"
-        },
-        {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": true,
-                    "name": "sender",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "name": "errorCode",
-                    "type": "uint256"
-                }
-            ],
-            "name": "Error",
-            "type": "event"
-        },
-        {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": true,
-                    "name": "owner",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "name": "owner_name",
-                    "type": "bytes32"
-                }
-            ],
-            "name": "OwnerCreated",
-            "type": "event"
-        },
-        {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "name": "message",
-                    "type": "string"
-                }
-            ],
-            "name": "Log",
-            "type": "event"
-        }
-    ]
-);
 
 ////// Controllers and function  *********************************************************************
 
@@ -333,7 +336,8 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
 
     my_scope.upload_asset = {
         name: "",
-        message: ""
+        message: "",
+        address: blockchainService.assetVerifier.address
     } ;
 
 
@@ -364,11 +368,11 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
             var my_api_bc = BC_FUELSERVER_URL;
 
             my_log.log("SendAndPollData with status:" + status);
-            my_scope.timer_count = my_scope.timer_count + 3;
+            my_scope.timer_count = my_scope.timer_count + 1;
 
             switch (status) {
                 case STEP_1_SENT_MONEY:
-                    my_scope.status_text = "Step-1: We put some ether to your contract, so he can work!";
+                    my_scope.status_text = "Part-1/4: We put Ether to your public address, to pay for the Blockchain transaction.";
                     my_http.post(my_api_bc + "1", contract_tx, null).success(function (req, res) {
                         my_log.log("success : " + req + ":" + res);
                         status = STEP_2_POLL_MONEY;
@@ -383,7 +387,7 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
                     break;
 
                 case STEP_2_POLL_MONEY:
-                    my_scope.status_text = "Step-2: We need to wait some seconds (up to 30) until the money is confirmed to be sent.";
+                    my_scope.status_text = "Part-2/4: We need to wait some seconds (up to 30) until the transaction is confirmed (mined).";
 
                     var tresult = blockchainService.checkTransaction(poll_transaction);
 
@@ -392,7 +396,7 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
                     } else {
                         my_log.log("Mining Done - send Asset");
                         my_scope.timer_count = 0;
-                        my_scope.status_text = "Step-3: Money is at your contract, you can check by clicking tx-1. Now sending your hash!!";
+                        my_scope.status_text = "Part-3/4: Now the certificates Hash is sent to the Smart Contract!";
 
                         my_http.post(my_api_bc + "2", contract_tx, null).success(function (req, res) {
                             my_log.log("Contract Created, results : " + req + ":" + res);
@@ -409,7 +413,7 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
 
                 case STEP_3_POLL_CONTRACT:
 
-                    my_scope.status_text = "Step-3: We need to wait some seconds (up to 30) until your transaction is confirmed.";
+                    my_scope.status_text = "Part -3/4: Certificate Hash was sent to the Smart Contract. We need to wait up to 30 seconds until the transaction is confirmed.";
 
                     tresult = blockchainService.checkTransaction(poll_transaction);
 
@@ -440,7 +444,7 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
 
                 case STEP_4_CONTRACT_DONE:
 
-                    my_scope.status_text = "Step-4: DONE - Your hash in on the Blockchain. Never to be deleted.";
+                    my_scope.status_text = "Step-4/4: DONE - Your Hash is in on the Blockchain. Never to be deleted.";
                     my_log.log("MISSION Completed");
                     my_scope.status_completed = true;
 
@@ -577,7 +581,7 @@ function assetsVerifyController(scope, win, console, bc_service, md5_service) {
                 }
                 else {
                     console.log("Failed to verity hash: " + res);
-                    my_scope.asset.filehash = "not found";
+                    my_scope.asset.filehash = checksum;
                     my_scope.asset.message = '';
                     my_scope.asset.onwername = '';
                     my_scope.asset.uploaded = '';
@@ -754,6 +758,8 @@ function compareTo() {
     }
 }
 
+
+
 angular.module("BlockChainDemo").directive("compareTo", compareTo);
 angular.module("BlockChainDemo").directive("errorPopup", function () {
     return {
@@ -762,6 +768,8 @@ angular.module("BlockChainDemo").directive("errorPopup", function () {
         controller: "BlockchainController"
     }
 });
+
+
 angular.module("BlockChainDemo").directive("globalLoader", function () {
     return {
         restrict: "EA",

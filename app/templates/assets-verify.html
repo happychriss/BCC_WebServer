@@ -23,20 +23,14 @@
         <div class="col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h3>Validate the Authenticity of a file / document!</h3>
-                    <p><strong> A wallet or Blockchain address is not needed, as your a are only reading from the Blockchain</strong></p>
-                     <p>As a validator (e.g. employee) you get the certificate as PDF to check if it was issued by the Certifier.</p>
-                    <p>When pressing "CHECK" the Hash of the file will be calculated. The Javascript on this page will read from the Smart Contract to find the Hash of the file.</p>
+                    <h3>Validate the Authenticity of a file!</h3>
+                    <p><strong>To validate that a file (a certificate) to be unchanged and correct, you will <strong>not</strong> need a Wallet or Blockchain address. You are only reading from the Blockchain.</strong></p>
+                    <p>As a validator (e.g. employee) you get the certificate as PDF to check if it was issued by the Certifier.</p>
+                    <p>When pressing "CHECK" the Hash of the file will be calculated. The Javascript on this page will than read the Smart Contract to find a matching Hash.</p>
                     <p>When the Hash is found, all data will be returned - including the Owner Name and Public-Address of the Certifier.</p>
                     <p>As a final step you need to double-check that the Public-Address belongs to the Certifier, e.g. by checking the Certifier WebPage.</p>
                     <p>Again - the file itself will *never* be uploaded to the Blockchain.</p>
-                    <h3>Why Blockchain is cool here?&nbsp;</h3>
-                    <ol>
-                        <li>The Certifier does not need to build its own system! Everybody can become a certifier</li>
-                        <li>The Blockchain is public and can never be manipulated. This gives also security to the certificate receiver- as he can always prove he got the Certificate</li>
-                        <li>There is no central infrastructure that can be hacked - it is a decentral system. Only a WebPage is needed</li>
-                        <li>There is another use-case....THINK ABOUT IT...</li>
-                    </ol>
+
                 </div>
             </div>
         </div>
@@ -47,17 +41,16 @@
     <div class="row">
         <div class="col-sm-6">
             <h4>Your information</h4>
-            <p>Smart Contract Address: <strong>{{asset.address}}</strong></p>
             <p>Hash of your File: <strong>{{asset.filehash}}</strong></p>
-
-            <h4>Results</h4>
+            <p>Smart Contract checked for this Hash: <strong>{{asset.address}}</strong></p>
+            <h4>Result</h4>
 
             <div ng-if="asset.asset_found">
                 <div class="panel_green">
                     <div class="panel-body">
-                        <b>The file you have checked was found in the Blockchains smart contract.!</b>
-                        <strong>Owner: {{asset.ownername}}</strong>
-                        <p>Owner Address: {{asset.owner}}</p>
+                        <p><strong>Great -your file is VALID and the Hash of your file was uploaded by a Certifier!</strong></p>
+                        <p>Certifier: <strong>{{asset.ownername}}</strong></p>
+                        <p>Certifier Public Address: <strong>{{asset.owner}}</strong></p>
                         <p>Message Text: <strong>{{asset.message}}</strong></p>
                         <p>File Uploaded on: <strong>{{asset.uploaded}}</strong></p>
                     </div>
@@ -67,9 +60,7 @@
             <div ng-if="!asset.asset_found">
                 <div class="panel_red">
                     <div class="panel-body">
-                        <b>ERROR:The file you checked is not represented on the Blockchain or has been
-                            manipulated!</b>
-
+                        <b>ERROR:The file you checked was not uploaded by a Certifier or has been manipulated!</b>
                     </div>
                 </div>
             </div>
@@ -78,15 +69,18 @@
         <div class="col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h3>Final Result</h3>
+                    <h3>Result of Certificate Validation</h3>
                     <ul>
-                        <li>If you see&nbsp; a "green checkmark" the file is correct.</li>
-                        <li>If you see a "red NO" the file did not match - it is not the same file as the one
-                            certified
-                            on
-                            the Blockchain.
-                        </li>
+                        <li>If you see&nbsp; a "green box" the file is correct.</li>
+                        <li>If you see a "red box" the file did not match - it is not the same file as the one certified onthe Blockchain.</li>
                     </ul>
+                    <h3>Why Blockchain is cool here?</h3>
+                    <ol>
+                        <li>The Certifier does not need to build its own system! Everybody can become a certifier</li>
+                        <li>The Blockchain is public and can never be manipulated. This gives also security to the certificate receiver- as he can always prove he got the Certificate</li>
+                        <li>There is no central infrastructure that can be hacked - it is a decentral system. Only a WebPage is needed</li>
+                        <li>There are many more uses cases with this application...THINK ABOUT IT...</li>
+                    </ol>
                 </div>
             </div>
         </div>
