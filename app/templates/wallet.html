@@ -40,7 +40,7 @@
                             <p>The javascript in your browser will generate a "Wallet" that contains a Public / Private Key-Pair.</p>
                             <ol>
                                 <li>The <strong>Public-Key</strong> is your ADDRESS on the Blockchain.</li>
-                                <li>The <strong>Private-Key</strong> is secured in your Wallet and protected by the password. Only with this Private-Key you can run a transaction on the Blockchain</li>
+                                <li>The <strong>Private-Key</strong> is secured in your Wallet and protected by the password. Only with this Private-Key you can run a transaction on the Blockchain.</li>
                             </ol>
 
                             <p>For simplification the Wallet is stored in your Browser Cache as Cookie. So the Wallet will be available, when you revisit this page later. </p>
@@ -84,7 +84,7 @@
 
             <div id="result">
                 <p>Public Address::</p>
-                <p><strong><a href="{{$root.ETHERSCAN}}{{accountAddress}}">{{accountAddress}}</strong></a>
+                <p><strong><a href="{{$root.ETHERSCAN}}address/{{accountAddress}}">0x{{accountAddress}}</strong></a>
                 <p>If you ever need to restore your wallet, keep this *secret* words to re-generate your wallet:</p>
                 <p><strong>{{seed}}</strong></p>
                 <div class="form-group">
@@ -118,8 +118,9 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                          <h3>Identity Created!</h3>
-                        <p>This number is a "public address". It is your Blockchain IDENTITY.</p>
-                        <p>The Certificate Issuer can publish the Public-Key on his Webpage. So everybody can check who is the real person behind the Blockchain address</p>
+                        <p>This number is the <strong>Public Address </strong>of the Certifier.</p>
+                        <p>The Certificate Issuer can publish the Public-Key on its Webpage. So everybody can check who is the real person behind the address.</p>
+                        <p>It is not 100% correct, but fair to say that the Public-Key of your wallet is the same as you Public Address.</p>
                         <h3>Protected by your Wallet!</h3>
                         <p>Any action with your Public Address is protected by the Private-Key, that is securely saved in your Wallet.</p>
                         <p><strong>In other words: Everything that happens on the Blockchain with your Address can only be done by the person who knows your private key - THAT IS YOU!</strong></p>

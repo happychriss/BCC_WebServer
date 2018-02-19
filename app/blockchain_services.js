@@ -22,6 +22,9 @@ function BlockChainService(my_ABI, address, host) {
 
 
     this.getOwnerName = function() {
+        if (bs_service.assetList.owner_name===null) {
+            return '';
+        }
         return bs_service.assetList.owner_name;
     };
 
@@ -70,7 +73,7 @@ function BlockChainService(my_ABI, address, host) {
                 if (err)
                     res(err, null);
                 else {
-                    var my_seed = prompt("Enter Seed to restore your wallet", "Seed");
+                    var my_seed = prompt("Enter Seed to re  store your wallet", "Seed");
                     if (!my_seed)
                         return;
                     bs_service.initWallet(pwd, my_seed, pwDerivedKey, res)
@@ -82,7 +85,7 @@ function BlockChainService(my_ABI, address, host) {
         this.initWallet = function (password, my_seed, pwDerivedKey, res) {
             bs_service.global_keystore = new lightwallet.keystore(my_seed, pwDerivedKey);
             bs_service.global_keystore.generateNewAddress(pwDerivedKey, 1);
-            bs_service.ownername = null;
+            bs_service.ownername = '';
             var a = bs_service.global_keystore.getAddresses();
             bs_service.address = a[0], bs_service.seed = my_seed;
             var l = new HookedWeb3Provider({

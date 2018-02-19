@@ -305,7 +305,7 @@ angular.module("BlockChainDemo",
             }
         ]
     ).run(["$http", "$uibModal","$rootScope", function (my_http, t, $rootScope) {
-        $rootScope.ETHERSCAN="https://rinkeby.etherscan.io/address/";
+        $rootScope.ETHERSCAN="https://rinkeby.etherscan.io/";
 
     }]);
 
@@ -387,7 +387,7 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
                     break;
 
                 case STEP_2_POLL_MONEY:
-                    my_scope.status_text = "Part-2/4: We need to wait some seconds (up to 30) until the transaction is confirmed (mined).";
+                    my_scope.status_text = "Part-2/4: We need to wait up to 45 seconds until the transaction is confirmed (mined).";
 
                     var tresult = blockchainService.checkTransaction(poll_transaction);
 
@@ -413,7 +413,7 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
 
                 case STEP_3_POLL_CONTRACT:
 
-                    my_scope.status_text = "Part -3/4: Certificate Hash was sent to the Smart Contract. We need to wait up to 30 seconds until the transaction is confirmed.";
+                    my_scope.status_text = "Part -3/4: Certificate Hash was sent to the Smart Contract. We need to wait up to 45 seconds until the transaction is confirmed.";
 
                     tresult = blockchainService.checkTransaction(poll_transaction);
 
@@ -447,6 +447,7 @@ function assetsUpload(scope, $timeout, my_http, o, my_log, blockchainService, md
                     my_scope.status_text = "Step-4/4: DONE - Your Hash is in on the Blockchain. Never to be deleted.";
                     my_log.log("MISSION Completed");
                     my_scope.status_completed = true;
+                    my_scope.poll_transaction=poll_transaction;
 
 
                     blockchainService.showOwnerDetails(blockchainService.address, function (err, asset) {

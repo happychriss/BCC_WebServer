@@ -7,8 +7,8 @@
 
                 <div ng-show="ownername==''">
                     <div class="form-group">
-                        <label>Certificate Issuer</label>
-                        <p>The "Certificate Issuer Name" can be any name that helps to find your real identify - for example the WebDomain you own. It is uploaded to the Blockchain and public.</p>
+                        <label>Certificate Issuer:</label>
+                        <p>The "Certificate Issuer Name" helps to identify the real institution- for example a WebDomain or your real world name. It is uploaded to the Blockchain and public.</p>
                         <input class="form-control" id="owner-name" type="text" ng-required="ownername==''" ng-model="upload_asset.name"/>
                     </div>
                 </div>
@@ -19,7 +19,7 @@
 
 
                 <div class="form-group">
-                    <label>Certificate</label>
+                    <label>Certificate:</label>
                     <p>The Certificate that was issued by you (to calculate the Hash). Can be anything: PDF, JPG, Word</p>
                     <input type="file" class="form-control" ngf-select ng-model="picFile" name="file" ngf-max-size="2MB"
                            required ngf-model-invalid="errorFile">
@@ -34,15 +34,17 @@
                     <textarea name="additional-message" class="form-control" id="additional-message" rows="1" ng-model="upload_asset.message"> </textarea>
                 </div>
 
-                <p><strong>Note:</strong></p>
-                <p>Your data will be uploaded to a Smart Contract on the Blochchain: &nbsp;<strong><a href="{{$root.ETHERSCAN}}{{upload_asset.address}}">0x{{upload_asset.address}}</a></strong></p>
-                <p>It will take ca 60 seconds until your transaction is confirmed.</p>
                 <div class="form-group">
                     <button ng-disabled="!myForm.$valid || !hasOwner()" ng-click="uploadPic(picFile)"
                             class="btn btn-default">
                         Push Certificate Hash to the Blockchain!
                     </button>
                 </div>
+
+                <p><strong>Note:</strong></p>
+                <p>It can take over 60 seconds to upload the data on the Blockchain to this Smart-Contract: &nbsp;<strong><a href="{{$root.ETHERSCAN}}address/{{upload_asset.address}}">0x{{upload_asset.address}}</a></strong></p>
+
+
             </form>
 
         </div>
@@ -69,7 +71,7 @@
                 <h3>Uploading Status</h3>                                                       
                 <div class="panel_green ">
                     <div class="panel-body">
-                        <h4>{{timer_count}}sec</h4>
+                        <h4>{{timer_count}} seconds</h4>
                         <p><strong>{{status_text}}</strong></p>
                         <div ng-show="status===4">
                                 <table>
@@ -99,9 +101,10 @@
                 <div class="panel panel-default">                                                                                           
                     <div class="panel-body">
                         <h3>It's now on the Blockchain.</h3>
-                        <p>Your data is stored in a "Smart Contract". You can check your data in the the Blockchain explorer:</p>
+                        <p><strong>Your data is stored in a "Smart Contract". You can check the transaction in the Etherscan - Blockchain explorer:</strong></p>
+                        <p><a href="{{$root.ETHERSCAN}}tx/{{poll_transaction}}">{{poll_transaction}}</a></p>
                         <p>Everybody can READ from this smart contract and has access to the Hashes that are stored there.</p>
-                        <p>Because only you can write data to the Blockchain with your Public Address - the Hash of the documents must have been uploaded by the Certicate Owner</p>
+                        <p>Because only you (the Certificate Owner) can write data to the Blockchain with your Public Address - the Hash of the documents must have been uploaded by him.</p>
                         <h3>Do it again</h3>
                         <p>You can do it for all certificate you are issuing, just upload another file and maybe update the message text.</p>
                     </div>
