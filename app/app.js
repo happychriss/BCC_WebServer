@@ -2,7 +2,7 @@
 
 angular.module("BlockChainDemo",
     ["ui.bootstrap", "ngCookies", "ljungmann.fileMd5", "ngFileUpload"])
-    .constant("HOST", "https://rinkeby.infura.io/NPDWCn9k71RH5knG9aPt")
+    .constant("HOST", "https://rinkeby.infura.io/v3/d89b45652db3453fb6ce55ffb6ec2fae")
     .constant("HC_ADDRESS", "2993adA82373AA0b3A95780E35D21718160Cc974")
     .constant("ABI",
 
